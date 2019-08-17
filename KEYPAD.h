@@ -22,10 +22,7 @@ byte data_count = 0, master_count = 0;
 bool Pass_is_good;
 
 char KEYPAD_loop(){
-  
   char key = keypad.getKey();
   Serial.println(key);
   return key
-
-  //NO_KEY
 }

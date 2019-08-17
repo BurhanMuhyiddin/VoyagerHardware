@@ -1,9 +1,6 @@
 /*
-
    Modified by Amiraslan Bakhshili
-
    Created by Amada Digital Voyagers team
-
 */
 
 #include <SPI.h>
@@ -32,6 +29,7 @@ String RFID_check()
     return;
   }
   //Show UID on serial monitor
+
   Serial.print("UID tag :");
   String content = "";
   byte letter;
@@ -42,9 +40,16 @@ String RFID_check()
     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
     content.concat(String(mfrc522.uid.uidByte[i], HEX));
   }
-  
   Serial.println();
-  Serial.print("Message : ");
+  Serial.print("Message: ");
   content.toUpperCase();
-  return content.substring(1);
+  
+  if (content.substring(1) == "96 BD BA 13") //change here the UID of the card/cards that you want to give access
+  {
+    Serial.println("Authorized access");
+    Serial.println();
+    delay(3000);
+  }
+
+  return "";
 }

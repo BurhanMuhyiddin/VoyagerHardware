@@ -6,6 +6,10 @@ const char caseId[] = "AlikhanovBakhshiliMuhyiddin";
 double lastLatitude = 40.405624;
 double lastLongitude = 49.847888;
 
+
+double lastTemperature = 20;
+double lastHumidity = 30;
+
 const short KEYPAD_ROW_1 = 5;
 const short KEYPAD_ROW_2 = 4;
 const short KEYPAD_ROW_3 = 3;
