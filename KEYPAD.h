@@ -1,5 +1,7 @@
 #include <Keypad.h>
 
+#define Password_Length 8 
+
 const byte ROWS = 4; //four rows
 const byte COLS = 3; //three columns
 
@@ -14,10 +16,16 @@ byte colPins[COLS] = {KEYPAD_COL_3, KEYPAD_COL_2, KEYPAD_COL_1}; //connect to th
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
-void KEYPAD_loop(){
-  char key = keypad.getKey();
+char Data[Password_Length]; 
+char Master[Password_Length] = "12345678"; 
+byte data_count = 0, master_count = 0;
+bool Pass_is_good;
 
-  if (key != NO_KEY){
-    Serial.println(key);
-  }
+char KEYPAD_loop(){
+  
+  char key = keypad.getKey();
+  Serial.println(key);
+  return key
+
+  //NO_KEY
 }

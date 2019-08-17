@@ -1,4 +1,6 @@
 
+bool isTracking = false;
+
 const char caseId[] = "AlikhanovBakhshiliMuhyiddin";
 
 double lastLatitude = 40.405624;

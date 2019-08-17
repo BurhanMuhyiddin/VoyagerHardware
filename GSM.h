@@ -4,6 +4,12 @@
 
 void printSerialData();
 
+void GSM_setup()
+{
+  Serial1.begin(9600);        //This opens up communications to the GPS
+  Serial.println("GSM Set up");          //Just show to the monitor that the sketch has started
+}
+
 void GSM_post()
 {
  Serial1.begin(9600);  

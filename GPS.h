@@ -8,7 +8,7 @@ TinyGPSPlus gps;
 void GPS_setup()
 {
   Serial2.begin(9600);        //This opens up communications to the GPS
-  Serial.println("GPS Start");          //Just show to the monitor that the sketch has started
+  Serial.println("GPS Set up");          //Just show to the monitor that the sketch has started
 }
 
 void GPS_loop() {
