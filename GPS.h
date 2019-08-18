@@ -7,41 +7,31 @@ TinyGPSPlus gps;
 
 void GPS_setup()
 {
-  Serial2.begin(115200);        //This opens up communications to the GPS
-  Serial.println("GPS Set up");          //Just show to the monitor that the sketch has started
+  Serial2.begin(9600);
+  Serial.println("GPS Set up");
 }
 
-void GPS_loop() {
-  while (Serial2.available())    //While there are characters to come from the GPS
+void GPS_fetchUpdate() {
+  while (Serial2.available())
   {
-    Serial.println("Available");
-    gps.encode(Serial2.read());  //This feeds the serial NMEA data into the library one char at a time
+    debug("GPS Available");
+    gps.encode(Serial2.read());
   }
-  if (gps.location.isUpdated())            //This will pretty much be fired all the time anyway but will at least reduce it to only after a package of NMEA data comes in
+  
+  if (gps.location.isUpdated())
   {
 
     double tempLat = gps.location.lat();
     double tempLong = gps.location.lng();
-
-    //Serial.println("is updated");
-    //Get the latest info from the gps object which it derived from the data sent by the GPS unit
-    //Serial.println("Satellite Count:");
-    //Serial.println(gps.satellites.value());
-    Serial.println("Latitude:");
-    Serial.println(tempLat, 6);
-    Serial.println("Longitude:");
-    Serial.println(tempLong, 6);
-    //Serial.println("Speed MPH:");
-    //Serial.println(gps.speed.mph());
-    //Serial.println("Altitude Feet:");
-    //Serial.println(gps.altitude.feet());
-    //Serial.println("");
+    
+    debug("Latitude:");
+    debug(tempLat, 6);
+    debug("Longitude:");
+    debug(tempLong, 6);
 
     if (tempLat != 0 && tempLong != 0) {
       lastLatitude = tempLat;
       lastLongitude = tempLong;
     }
   }
-
-  //Serial.println("Third");
 }

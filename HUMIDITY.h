@@ -9,11 +9,9 @@ dht DHT;
 
 #define DHT11_PIN A0
 
-void updateTempAndPressure()
+void humidity_fetchUpdate()
 {
   DHT.read11(DHT11_PIN);
   lastTemperature = DHT.temperature;
   lastHumidity = DHT.humidity;
-  Serial.println(DHT.temperature);
-  Serial.println(DHT.humidity);
 }
