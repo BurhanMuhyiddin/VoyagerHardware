@@ -16,40 +16,29 @@ void RFID_setup()
   mfrc522.PCD_Init();   // Initiate MFRC522
 }
 
-String RFID_check()
+bool RFID_check(char* response)
 {
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent())
   {
-    return;
+    return false;
   }
   // Select one of the cards
   if ( ! mfrc522.PICC_ReadCardSerial())
   {
-    return;
+    return false;
   }
-  //Show UID on serial monitor
 
-  Serial.print("UID tag :");
   String content = "";
-  byte letter;
   for (byte i = 0; i < mfrc522.uid.size; i++)
   {
-    Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
-    Serial.print(mfrc522.uid.uidByte[i], HEX);
     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
     content.concat(String(mfrc522.uid.uidByte[i], HEX));
   }
-  Serial.println();
-  Serial.print("Message: ");
+ 
   content.toUpperCase();
+  content.replace(" ", ":");
+  strcpy(response, content.c_str());
   
-  if (content.substring(1) == "96 BD BA 13") //change here the UID of the card/cards that you want to give access
-  {
-    Serial.println("Authorized access");
-    Serial.println();
-    delay(3000);
-  }
-
-  return "";
+  return true;
 }

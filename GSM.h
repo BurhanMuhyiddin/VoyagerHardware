@@ -6,15 +6,12 @@ void printSerialData();
 
 void GSM_setup()
 {
-  Serial1.begin(115200);        //This opens up communications to the GPS
-  Serial.println("GSM Set up");          //Just show to the monitor that the sketch has started
-}
-
-void GSM_post()
-{
+  Serial1.begin(9600); //This opens up communications to the GPS
+  Serial1.println("AT+CMEE=2");
   delay(100);
-
-  Serial1.println("AT+CSQ");
+  
+  printSerialData();
+   Serial1.println("AT+CSQ");
   delay(100);
   printSerialData();
 
@@ -36,46 +33,42 @@ void GSM_post()
 
 
   Serial1.println("AT+SAPBR=1,1"); //init the HTTP request
+  delay(1000);
+  printSerialData();
+
+  Serial1.println("AT+HTTPINIT");
+  delay(1000);
+  printSerialData();
+  Serial.println("GSM Set up"); //Just show to the monitor that the sketch has started
+}
+
+void GSM_post(const char* url, const char* body, char * response)
+{
+  debug("posting");
+  Serial1.println("AT+HTTPARA=\"CID\",1");
   delay(100);
   printSerialData();
 
-  Serial1.println("AT+HTTPINIT");// setting the httppara,
-  //the second parameter is the website from where you want to access data
+  String s;
+
+  /// Setting URL
+  s = "AT+HTTPPARA=\"URL\",\"";
+  s.concat(url);
+  s.concat("\"");
+  Serial.println(s);
+  Serial1.println(s);
   delay(100);
   printSerialData();
 
-  Serial1.println("AT+HTTPARA=\"CID\",1");// setting the httppara,
-  //the second parameter is the website from where you want to access data
+  /// SET content type
+  Serial1.println("AT+HTTPPARA=\"CONTENT\",\"text/plain\"");
   delay(100);
   printSerialData();
 
-  Serial1.println("AT+HTTPPARA=\"URL\",\"http://ptsv2.com/t/amada/post\"");// setting the httppara,
-  //the second parameter is the website from where you want to access data
-  delay(100);
-  printSerialData();
-
-  // char param[50];
-  // strcpy(param, );
-  // strcat(param, content);
-  // strcat(param, "\"");
-
-  Serial1.println("AT+HTTPPARA=\"CONTENT\",\"text/plain\"");// setting the httppara,
-  //the second parameter is the website from where you want to access data
-  delay(100);
-  printSerialData();
-
-  char body[128];
-  sprintf(body, "%s %s %s %s %s", caseId, String(lastLatitude, 6).c_str(), String(lastLongitude, 6).c_str(), String(lastTemperature).c_str(), String(lastHumidity).c_str());
-  //Serial.print(caseId);
-  //Serial.print(lastLatitude);
-  //Serial.println(body);
-
-  char httpData[50];
+  char httpData[128];
   sprintf(httpData, "AT+HTTPDATA=%i,10000", strlen(body));
-
   Serial.println(httpData);
   Serial1.println(httpData);
-
   delay(100);
   printSerialData();
 
@@ -84,20 +77,20 @@ void GSM_post()
   printSerialData();
 
   Serial1.println("AT+HTTPACTION=1");// setting the httppara,
-  //the second parameter is the website from where you want to access data
-  delay(100);
-  printSerialData();
+  delay(5000);
+  
+  /// Wait until available
+  while (Serial1.available() == 0);
 
-  Serial1.println("AT+HTTPREAD");// setting the httppara,
-  //the second parameter is the website from where you want to access data
-  delay(100);
-  //printSerialData();
+  byte i = 0;
+  while (Serial1.available() != 0) {
+    response[i++] = Serial1.read();
+  }
+  response[i] = '\0';
 }
 
 void printSerialData()
 {
-  while (Serial1.available() != 0) {
-    //Serial.println("AMiraslan");
+  while (Serial1.available() != 0)
     Serial.write(Serial1.read());
-  }
 }
