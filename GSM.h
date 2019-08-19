@@ -7,6 +7,13 @@ void printSerialData();
 void GSM_setup()
 {
   Serial1.begin(9600); //This opens up communications to the GPS
+  
+}
+
+void GSM_post(const char* url, const char* body, char * response)
+{
+
+  debug("posting");
   Serial1.println("AT+CMEE=2");
   delay(100);
   
@@ -40,11 +47,6 @@ void GSM_setup()
   delay(1000);
   printSerialData();
   Serial.println("GSM Set up"); //Just show to the monitor that the sketch has started
-}
-
-void GSM_post(const char* url, const char* body, char * response)
-{
-  debug("posting");
   Serial1.println("AT+HTTPARA=\"CID\",1");
   delay(100);
   printSerialData();
@@ -77,7 +79,7 @@ void GSM_post(const char* url, const char* body, char * response)
   printSerialData();
 
   Serial1.println("AT+HTTPACTION=1");// setting the httppara,
-  delay(5000);
+  delay(7000);
   
   /// Wait until available
   while (Serial1.available() == 0);

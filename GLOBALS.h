@@ -1,5 +1,8 @@
-
+bool didCollide = false;
 bool isTracking = false;
+bool isWaitingTracking = false;
+bool isDoorClosed = false;
+bool lastIsDoorClosed = false;
 
 const char caseId[] = "caseid-1";
 
